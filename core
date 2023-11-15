@@ -1,0 +1,22 @@
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+#Load historical user growth data for Calm App into a Pandas DataFrame
+data = pd.read_csv('app_a_user_growth.csv')
+X = data[['Marketing_Spend']]
+y = data['Users']
+X.fillna(0, inplace=True)
+y.fillna(0, inplace=True)
+
+#Linear Regression model & Train the model available data
+model = LinearRegression()
+model.fit(X, y)
+
+#Define projected marketing spending for SoFree for the next 5 years
+marketing_spend_SoFree_next_5_years = [210000, 220000, 230000, 240000, 250000]
+
+#User growth projection, data storage, and display projection
+user_growth_SoFree_next_5_years = model.predict(np.array(marketing_spend_SoFree_next_5_years).reshape(-1, 1))
+projection_data = pd.DataFrame({'Year': range(2024, 2029), 'Marketing_Spend': marketing_spend_SoFree_next_5_years, 'User_Growth': user_growth_SoFree_next_5_years})
+print(projection_data)
